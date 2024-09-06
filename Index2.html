@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player de Música</title>
+    <title>Player de Música - Efeito</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,17 +13,18 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background: url('IA-poesia-musica.jpg') no-repeat center center fixed; /* Substitua pela URL da sua imagem de fundo */
+            background: url('IA-poesia-musica.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
         }
+
         .playlist-container {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin: 20px 0;
         }
-      
+
         .playlist {
             list-style: none;
             padding: 0;
@@ -33,6 +34,7 @@
             border-radius: 10px;
             padding: 15px;
         }
+
         .playlist li {
             cursor: pointer;
             padding: 10px;
@@ -41,16 +43,19 @@
             border-radius: 5px;
             background-color: #0a0b5f;
         }
+
         .playlist li:hover {
             background-color: #555;
         }
+
         audio {
             margin: 20px;
         }
+
         .player-controls {
             margin-top: 20px;
-            
         }
+
         button {
             margin: 0 10px;
             padding: 10px 20px;
@@ -59,30 +64,36 @@
     </style>
 </head>
 <body>
-    <h1>Efeito</h1>
+    <h1>Efeito de Sons</h1>
     <div class="playlist-container">
         <ul class="playlist" id="playlist1">
             <li data-src="b5.mp3">Efeito de tiros ao fundo</li>
-	     <li data-src="btiros.mp3">Glock</li>
-		<li data-src="Shot.mp3">tiro no patria</li>
-		 <li data-src="Pancadas.mp3">Pancada chaves</li>
+            <li data-src="btiros.mp3">Glock</li>
+            <li data-src="Shot.mp3">Tiro no patria</li>
+            <li data-src="Pancadas.mp3">Pancada chaves</li>
         </ul>
         <ul class="playlist" id="playlist2">
-	  <li data-src="Smoke.mp3">Fumaça</li>
-	  <li data-src="Stop.mp3">Para a Musica</li>
-		<li data-src="Laser.mp3">Laser</li>
-		<li data-src="gun.mp3">Gun</li>
+            <li data-src="Smoke.mp3">Fumaça</li>
+            <li data-src="Stop.mp3">Para a Musica</li>
+            <li data-src="Laser.mp3">Laser</li>
+            <li data-src="gun.mp3">Gun</li>
         </ul>
     </div>
 
     <audio id="audio" controls>
         Seu navegador não suporta o elemento de áudio.
     </audio>
+    
     <div class="player-controls">
         <button onclick="playPause()">Play/Pause</button>
         <button onclick="previousTrack()">Anterior</button>
         <button onclick="nextTrack()">Próximo</button>
         <button onclick="toggleLoop()">Loop: <span id="loopStatus">Off</span></button>
+    </div>
+
+    <!-- Botão para voltar à página index -->
+    <div style="margin-top: 20px;">
+        <button onclick="window.location.href='index.html'">Voltar para o Index</button>
     </div>
 
     <script>
@@ -97,7 +108,8 @@
             const tracks = currentPlaylist.querySelectorAll('li');
             const currentTrack = tracks[currentTrackIndex];
             audioElement.src = currentTrack.getAttribute('data-src');
-            audioElement.play();
+            // Remover o autoplay ao selecionar a música
+            audioElement.pause();
         }
 
         function playPause() {
@@ -137,6 +149,7 @@
             });
         });
 
+        // Carregar a primeira faixa sem tocar
         loadTrack();
     </script>
 </body>
