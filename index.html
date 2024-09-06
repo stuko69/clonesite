@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background: url('IA-poesia-musica.jpg') no-repeat center center fixed; /* Substitua pela URL da sua imagem de fundo */
+            background: url('IA-poesia-musica.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
         }
@@ -49,12 +49,24 @@
         }
         .player-controls {
             margin-top: 20px;
-            
         }
         button {
             margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
+        }
+        #nextPageButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #21c1cc;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        #nextPageButton:hover {
+            background-color: #1a8a9c;
         }
     </style>
 </head>
@@ -64,20 +76,17 @@
         <ul class="playlist" id="playlist1">
             <li data-src="b1.mp3">Efeito da camera</li>
             <li data-src="b2.mp3">Música entrada patria</li>
-	    <li data-src="b3.mp3">Música da mamada</li>
-	    <li data-src="b4.mp3">Musica do gta</li>
-	    <li data-src="dança.mp3">Dança parte de moto moto e jao</li>
+            <li data-src="b3.mp3">Música da mamada</li>
+            <li data-src="b4.mp3">Musica do gta</li>
+            <li data-src="dança.mp3">Dança parte de moto moto e jao</li>
         </ul>
         <ul class="playlist" id="playlist2">
-	   <li data-src="b6.mp3">Momento que a tempesta fala que a eco sumiu</li>
-	   <li data-src="b7.mp3">cena do escuro(espiões)</li>
-	   <li data-src="b8.mp3">Música da ashley sujeita a mudanças</li>
-	    <li data-src="iluminati.mp3">cena da descoberta(musica iluminati)</li>
+            <li data-src="b6.mp3">Momento que a tempesta fala que a eco sumiu</li>
+            <li data-src="b7.mp3">Cena do escuro (espiões)</li>
+            <li data-src="b8.mp3">Música da Ashley sujeita a mudanças</li>
+            <li data-src="iluminati.mp3">Cena da descoberta (música iluminati)</li>
             <li data-src="dança.mp3">Dança</li>
         </ul>
-	 <div id="pau">
-	<a href="Index2.html">efeito</a>
-	 </div>
     </div>
    
     <audio id="audio" controls>
@@ -90,6 +99,8 @@
         <button onclick="toggleLoop()">Loop: <span id="loopStatus">Off</span></button>
     </div>
 
+    <button id="nextPageButton" onclick="goToNextPage()">Ir para próxima página</button>
+
     <script>
         const audioElement = document.getElementById('audio');
         const playlists = document.querySelectorAll('.playlist');
@@ -98,11 +109,13 @@
         let loop = false;
         let currentPlaylist = playlists[0];
 
-        function loadTrack() {
+        function loadTrack(play = false) {
             const tracks = currentPlaylist.querySelectorAll('li');
             const currentTrack = tracks[currentTrackIndex];
             audioElement.src = currentTrack.getAttribute('data-src');
-            audioElement.play();
+            if (play) {
+                audioElement.play();
+            }
         }
 
         function playPause() {
@@ -116,13 +129,13 @@
         function nextTrack() {
             const tracks = currentPlaylist.querySelectorAll('li');
             currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-            loadTrack();
+            loadTrack(true);
         }
 
         function previousTrack() {
             const tracks = currentPlaylist.querySelectorAll('li');
             currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-            loadTrack();
+            loadTrack(true);
         }
 
         function toggleLoop() {
@@ -137,12 +150,17 @@
                     const tracks = playlist.querySelectorAll('li');
                     currentPlaylist = playlist;
                     currentTrackIndex = Array.from(tracks).indexOf(e.target);
-                    loadTrack();
+                    loadTrack(false);  // Não tocar automaticamente, apenas carregar a faixa
                 }
             });
         });
 
-        loadTrack();
+        // Função para ir para a próxima página
+        function goToNextPage() {
+            window.location.href = 'Index2.html';
+        }
+
+        loadTrack(false);  // Não iniciar automaticamente o áudio
     </script>
 </body>
 </html>
