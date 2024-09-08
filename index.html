@@ -4,54 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player de Música</title>
-        <style>
-  *{
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-  }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-  }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
 
-  .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 20px;
-  }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+        }
 
-  .controls {
-      width: 30%;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+        .controls {
+            width: 30%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-  .script-box {
-      width: 65%;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+        .script-box {
+            width: 65%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-  .scrollable-script {
-      height: 400px;
-      overflow-y: scroll;
-      background-color: #f9f9f9;
-      padding: 10px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-      white-space: pre-wrap;
-  }
+        .scrollable-script {
+            height: 400px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+        }
 
-  .scrollable-script pre {
-      font-family: 'Courier New', Courier, monospace;
-  }
+        .scrollable-script pre {
+            font-family: 'Courier New', Courier, monospace;
+        }
 
         body {
             font-family: Arial, sans-serif;
@@ -65,13 +65,14 @@
             background-size: cover;
             color: #fff;
         }
+
         .playlist-container {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin: 20px 0;
         }
-      
+
         .playlist {
             list-style: none;
             padding: 0;
@@ -81,6 +82,7 @@
             border-radius: 10px;
             padding: 15px;
         }
+
         .playlist li {
             cursor: pointer;
             padding: 10px;
@@ -89,20 +91,25 @@
             border-radius: 5px;
             background-color: #0a0b5f;
         }
+
         .playlist li:hover {
             background-color: #555;
         }
+
         audio {
             margin: 20px;
         }
+
         .player-controls {
             margin-top: 20px;
         }
+
         button {
             margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
         }
+
         #nextPageButton {
             margin-top: 20px;
             padding: 10px 20px;
@@ -113,42 +120,72 @@
             font-size: 16px;
             border-radius: 5px;
         }
+
         #nextPageButton:hover {
             background-color: #1a8a9c;
         }
     </style>
 </head>
 <body>
-    <h1>Player de Música</h1>
-    <div class="playlist-container">
-        <ul class="playlist" id="playlist1">
-            <li data-src="b2.mp3">Música entrada patria</li>
-            <li data-src="go.mp3">musica do tiro ultima hora para sicronizar</li>
-            <li data-src="play.mp3">pode substituir a do gta</li>
-            <li data-src="fundo.mp3">musica de fundo</li>
-            <li data-src="b3.mp3">Música da mamada</li>
-            <li data-src="b4.mp3">Musica do gta</li>
-        </ul>
-        <ul class="playlist" id="playlist2">
-            <li data-src="b6.mp3">Momento que a tempesta fala que a eco sumiu</li>
-            <li data-src="b7.mp3">Cena do escuro (espiões)</li>
-            <li data-src="b8.mp3">Música da Ashley sujeita a mudanças</li>
-            <li data-src="iluminati.mp3">Cena da descoberta (música iluminati)</li>
-            <li data-src="dança.mp3">Dança</li>
-        </ul>
-    </div>
-   
-    <audio id="audio" controls>
-        Seu navegador não suporta o elemento de áudio.
-    </audio>
-    <div class="player-controls">
-        <button onclick="playPause()">Play/Pause</button>
-        <button onclick="previousTrack()">Anterior</button>
-        <button onclick="nextTrack()">Próximo</button>
-        <button onclick="toggleLoop()">Loop: <span id="loopStatus">Off</span></button>
-    </div>
+    <div class="container">
+        <!-- Controles de música -->
+        <div class="controls">
+            <h1>Player de Música</h1>
+            <div class="playlist-container">
+                <ul class="playlist" id="playlist1">
+                    <li data-src="b2.mp3">Música entrada pátria</li>
+                    <li data-src="go.mp3">Música do tiro última hora</li>
+                    <li data-src="play.mp3">Substituir a do GTA</li>
+                    <li data-src="fundo.mp3">Música de fundo</li>
+                    <li data-src="b3.mp3">Música da mamada</li>
+                    <li data-src="b4.mp3">Música do GTA</li>
+                </ul>
+                <ul class="playlist" id="playlist2">
+                    <li data-src="b6.mp3">Momento Tempesta e Eco</li>
+                    <li data-src="b7.mp3">Cena escura</li>
+                    <li data-src="b8.mp3">Música da Ashley</li>
+                    <li data-src="iluminati.mp3">Música descoberta</li>
+                    <li data-src="dança.mp3">Dança</li>
+                </ul>
+            </div>
+            
+            <audio id="audio" controls>
+                Seu navegador não suporta o elemento de áudio.
+            </audio>
+            <div class="player-controls">
+                <button onclick="playPause()">Play/Pause</button>
+                <button onclick="previousTrack()">Anterior</button>
+                <button onclick="nextTrack()">Próximo</button>
+                <button onclick="toggleLoop()">Loop: <span id="loopStatus">Off</span></button>
+            </div>
+            
+            <button id="nextPageButton" onclick="goToNextPage()">Ir para próxima página</button>
+        </div>
 
-    <button id="nextPageButton" onclick="goToNextPage()">Ir para próxima página</button>
+        <!-- Caixa de rolagem com o roteiro -->
+        <div class="script-box">
+            <h2>Roteiro</h2>
+            <div class="scrollable-script">
+                <pre id="script-content">
+                    THE BOYS - ROTEIRO PARA ATORES
+                    Eco - Gabi
+                    Bruto - Henrique Felipe
+                    Francês - João Guilherme
+                    Tempesta - Flora
+                    Capitão Pátria - Guilherme Arthur
+                    Luz-Estrela - Ana Luiza
+                    Maeve - Ana Izaura
+                    Ashley - Ana Júlia
+
+                    CENA 1:
+                    (Ashley entra pelo corredor com repórteres falando em burburinho atrás).
+                    Ashley: Um por vez! Um por vez!
+                    ...
+                    <!-- Continue o conteúdo do roteiro aqui -->
+                </pre>
+            </div>
+        </div>
+    </div>
 
     <script>
         const audioElement = document.getElementById('audio');
@@ -211,6 +248,5 @@
 
         loadTrack(false);  // Não iniciar automaticamente o áudio
     </script>
-   
 </body>
 </html>
