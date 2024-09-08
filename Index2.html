@@ -3,8 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player de Música - Efeito</title>
+    <title>Player de Efeitos</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .controls {
+            width: 30%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .script-box {
+            width: 65%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .scrollable-script {
+            height: 400px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+        }
+
+        .scrollable-script pre {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -13,8 +61,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background: url('IA-poesia-musica.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #333;
             color: #fff;
         }
 
@@ -61,39 +108,79 @@
             padding: 10px 20px;
             font-size: 16px;
         }
+
+        #nextPageButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #21c1cc;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        #nextPageButton:hover {
+            background-color: #1a8a9c;
+        }
     </style>
 </head>
 <body>
-    <h1>Efeito de Sons</h1>
-    <div class="playlist-container">
-        <ul class="playlist" id="playlist1">
-            <li data-src="b5.mp3">Efeito de tiros ao fundo</li>
-            <li data-src="btiros.mp3">Glock</li>
-            <li data-src="Shot.mp3">Tiro no patria</li>
-            <li data-src="Pancada.mp3">Pancada chaves</li>
-        </ul>
-        <ul class="playlist" id="playlist2">
-            <li data-src="Smoke.mp3">Fumaça</li>
-            <li data-src="Stop.mp3">Para a Musica</li>
-            <li data-src="Laser.mp3">Laser</li>
-            <li data-src="gun.mp3">Gun</li>
-        </ul>
-    </div>
+    <div class="container">
+        <!-- Controles de efeitos -->
+        <div class="controls">
+            <h1>Player de Efeitos</h1>
+            <div class="playlist-container">
+                <ul class="playlist" id="playlist1">
+                    <li data-src="Laser.mp3">Efeito de Laser</li>
+                    <li data-src="Smoke.mp3">Efeito de Fumaça</li>
+                    <li data-src="Shot.mp3">Efeito de Tiro</li>
+                    <li data-src="Pancada.mp3">Efeito de Pancada</li>
+                    <li data-src="Stop.mp3">Efeito de Parada</li>
+                </ul>
+                <ul class="playlist" id="playlist2">
+                    <li data-src="btiros.mp3">Tiros múltiplos</li>
+                    <li data-src="gun.mp3">Som de Arma</li>
+                    <li data-src="trick.mp3">Efeito de Truque</li>
+                </ul>
+            </div>
 
-    <audio id="audio" controls>
-        Seu navegador não suporta o elemento de áudio.
-    </audio>
-    
-    <div class="player-controls">
-        <button onclick="playPause()">Play/Pause</button>
-        <button onclick="previousTrack()">Anterior</button>
-        <button onclick="nextTrack()">Próximo</button>
-        <button onclick="toggleLoop()">Loop: <span id="loopStatus">Off</span></button>
-    </div>
+            <audio id="audio" controls>
+                Seu navegador não suporta o elemento de áudio.
+            </audio>
+            <div class="player-controls">
+                <button onclick="playPause()">Play/Pause</button>
+                <button onclick="previousTrack()">Anterior</button>
+                <button onclick="nextTrack()">Próximo</button>
+                <button onclick="toggleLoop()">Loop: <span id="loopStatus">Off</span></button>
+            </div>
+            
+            <button id="nextPageButton" onclick="goToNextPage()">Voltar para página anterior</button>
+        </div>
 
-    <!-- Botão para voltar à página index -->
-    <div style="margin-top: 20px;color:red;">
-        <button onclick="window.location.href='index.html'">Voltar para o Index</button>
+        <!-- Caixa de rolagem com o roteiro -->
+        <div class="script-box">
+            <h2>Roteiro</h2>
+            <div class="scrollable-script">
+                <pre id="script-content">
+                    THE BOYS - ROTEIRO PARA ATORES
+                    Eco - Gabi
+                    Bruto - Henrique Felipe
+                    Francês - João Guilherme
+                    Tempesta - Flora
+                    Capitão Pátria - Guilherme Arthur
+                    Luz-Estrela - Ana Luiza
+                    Maeve - Ana Izaura
+                    Ashley - Ana Júlia
+
+                    CENA 1:
+                    (Ashley entra pelo corredor com repórteres falando em burburinho atrás).
+                    Ashley: Um por vez! Um por vez!
+                    ...
+                    <!-- Continue o conteúdo do roteiro aqui -->
+                </pre>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -104,12 +191,13 @@
         let loop = false;
         let currentPlaylist = playlists[0];
 
-        function loadTrack() {
+        function loadTrack(play = false) {
             const tracks = currentPlaylist.querySelectorAll('li');
             const currentTrack = tracks[currentTrackIndex];
             audioElement.src = currentTrack.getAttribute('data-src');
-            // Remover o autoplay ao selecionar a música
-            audioElement.pause();
+            if (play) {
+                audioElement.play();
+            }
         }
 
         function playPause() {
@@ -123,13 +211,13 @@
         function nextTrack() {
             const tracks = currentPlaylist.querySelectorAll('li');
             currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-            loadTrack();
+            loadTrack(true);
         }
 
         function previousTrack() {
             const tracks = currentPlaylist.querySelectorAll('li');
             currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-            loadTrack();
+            loadTrack(true);
         }
 
         function toggleLoop() {
@@ -144,13 +232,17 @@
                     const tracks = playlist.querySelectorAll('li');
                     currentPlaylist = playlist;
                     currentTrackIndex = Array.from(tracks).indexOf(e.target);
-                    loadTrack();
+                    loadTrack(false);  // Não tocar automaticamente, apenas carregar a faixa
                 }
             });
         });
 
-        // Carregar a primeira faixa sem tocar
-        loadTrack();
+        // Função para voltar à página anterior
+        function goToNextPage() {
+            window.location.href = 'index.html';
+        }
+
+        loadTrack(false);  // Não iniciar automaticamente o áudio
     </script>
 </body>
 </html>
