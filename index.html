@@ -1,247 +1,853 @@
-<!DOCTYPE html>  
-<html lang="pt-br">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Player de Música</title>  
-    <style>  
-        * {  
-            margin: 0;  
-            padding: 0;  
-            box-sizing: border-box;  
-        }  
 
-        body {  
-            font-family: Arial, sans-serif;  
-            background-color: #f4f4f4;  
-            color: #333;  
-        }  
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player de Música</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        .container {  
-            display: flex;  
-            justify-content: space-between;  
-            align-items: flex-start;  
-            padding: 20px;  
-        }  
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
 
-        .controls {  
-            width: 30%;  
-            background-color: #fff;  
-            padding: 20px;  
-            border-radius: 8px;  
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
-        }  
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+        }
 
-        .script-box {  
-            width: 65%;  
-            background-color: #fff;  
-            padding: 20px;  
-            border-radius: 8px;  
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
-        }  
+        .controls {
+            width: 30%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-        .scrollable-script {  
-            height: 400px;  
-            overflow-y: scroll;  
-            background-color: #f9f9f9;  
-            padding: 10px;  
-            border-radius: 4px;  
-            border: 1px solid #ddd;  
-            white-space: pre-wrap;  
-        }  
+        .script-box {
+            width: 65%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-        .scrollable-script pre {  
-            font-family: 'Courier New', Courier, monospace;  
-            color: #000000;  
-        }  
+        .scrollable-script {
+            height: 400px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+        }
 
-        .character {  
-            color: #1e90ff; /* Azul para os nomes dos personagens */  
-            font-weight: bold;  
-        }  
+        .scrollable-script pre {
+            font-family: 'Courier New', Courier, monospace;
+            color: #000000;
+        }
 
-        .action {  
-            color: #ff6347; /* Tomate para ações */  
-            font-style: italic;  
-        }  
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url('IA-poesia-musica.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
 
-        body {  
-            display: flex;  
-            flex-direction: column;  
-            align-items: center;  
-            justify-content: center;  
-            height: 100vh;  
-            margin: 0;  
-            background: url('IA-poesia-musica.jpg') no-repeat center center fixed;  
-            background-size: cover;  
-            color: #fff;  
-        }  
+        .playlist-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
 
-        .playlist-container {  
-            display: flex;  
-            justify-content: center;  
-            gap: 20px;  
-            margin: 20px 0;  
-        }  
+        .playlist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 45%;
+            background-color: rgba(53, 82, 245, 0.6); 
+            border-radius: 10px;
+            padding: 15px;
+        }
 
-        .playlist {  
-            list-style: none;  
-            padding: 0;  
-            margin: 0;  
-            width: 45%;  
-            background-color: rgba(53, 82, 245, 0.6);   
-            border-radius: 10px;  
-            padding: 15px;  
-        }  
+        .playlist li {
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid #21c1cc;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            background-color: #0a0b5f;
+        }
 
-        .playlist li {  
-            cursor: pointer;  
-            padding: 10px;  
-            border: 1px solid #21c1cc;  
-            margin-bottom: 5px;  
-            border-radius: 5px;  
-            background-color: #0a0b5f;  
-        }  
+        .playlist li:hover {
+            background-color: #555;
+        }
 
-        .playlist li:hover {  
-            background-color: #555;  
-        }  
+        audio {
+            margin: 20px;
+        }
 
-        audio {  
-            margin: 20px;  
-        }  
+        .player-controls {
+            margin-top: 20px;
+        }
 
-        .player-controls {  
-            margin-top: 20px;  
-        }  
+        button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
 
-        button {  
-            margin: 0 10px;  
-            padding: 10px 20px;  
-            font-size: 16px;  
-        }  
+        #nextPageButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #21c1cc;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
 
-        #nextPageButton {  
-            margin-top: 20px;  
-            padding: 10px 20px;  
-            background-color: #21c1cc;  
-            color: #fff;  
-            border: none;  
-            cursor: pointer;  
-            font-size: 16px;  
-            border-radius: 5px;  
-        }  
-
-        #nextPageButton:hover {  
-            background-color: #1a8a9c;  
-        }  
-    </style>  
-</head>  
-<body>  
-    <div class="container">  
-        <!-- Controles de música -->  
-        <div class="controls">  
-            <h1>Player de Música</h1>  
-            <div class="playlist-container">  
-                <ul class="playlist" id="playlist1">  
-                    <li data-src="b2.mp3">Música entrada pátria</li>  
-                    <li data-src="go.mp3">Música do tiro última hora</li>  
-                    <li data-src="play.mp3">Substituir a do GTA</li>  
-                    <li data-src="fundo.mp3">Música de fundo</li>  
-                    <li data-src="b3.mp3">Música da mamada</li>  
-                    <li data-src="b4.mp3">Música do GTA</li>  
-                </ul>  
-                <ul class="playlist" id="playlist2">  
-                    <li data-src="b6.mp3">Momento que a tempesta fala que a eco sumiu</li>  
-                    <li data-src="b7.mp3">Cena do escuro (espiões)</li>  
-                    <li data-src="b8.mp3">Música da Ashley (desabafo)sujeita a mudanças</li>  
-                    <li data-src="iluminati.mp3">Cena da descoberta (música iluminati)</li>  
-                    <li data-src="dança.mp3">Dança</li>  
-                </ul>  
-            </div>  
+        #nextPageButton:hover {
+            background-color: #1a8a9c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Controles de música -->
+        <div class="controls">
+            <h1>Player de Música</h1>
+            <div class="playlist-container">
+                <ul class="playlist" id="playlist1">
+                    <li data-src="b2.mp3">Música entrada pátria</li>
+                    <li data-src="go.mp3">Música do tiro última hora</li>
+                    <li data-src="play.mp3">Substituir a do GTA</li>
+                    <li data-src="fundo.mp3">Música de fundo</li>
+                    <li data-src="b3.mp3">Música da mamada</li>
+                    <li data-src="b4.mp3">Música do GTA</li>
+                </ul>
+                <ul class="playlist" id="playlist2">
+                    <li data-src="b6.mp3">Momento que a tempesta fala que a eco sumiu</li>
+                    <li data-src="b7.mp3">Cena do escuro (espiões)</li>
+                    <li data-src="b8.mp3">Música da Ashley (desabafo)sujeita a mudanças</li>
+                    <li data-src="iluminati.mp3">Cena da descoberta (música iluminati)</li>
+                    <li data-src="dança.mp3">Dança</li>
+                </ul>
+            </div>
             
-            <audio id="audio" controls>  
-                Seu navegador não suporta o elemento de áudio.  
-            </audio>  
-            <div class="player-controls">  
-                <button onclick="playPause()">Play/Pause</button>  
-                <button onclick="previousTrack()">Anterior</button>  
-                <button onclick="nextTrack()">Próximo</button>  
-                <button onclick="toggleLoop()">Loop: <span id="loopStatus">Off</span></button>  
-            </div>  
+            <audio id="audio" controls>
+                Seu navegador não suporta o elemento de áudio.
+            </audio>
+            <div class="player-controls">
+                <button onclick="playPause()">Play/Pause</button>
+                <button onclick="previousTrack()">Anterior</button>
+                <button onclick="nextTrack()">Próximo</button>
+                <button onclick="toggleLoop()">Loop: <span id="loopStatus">Off</span></button>
+            </div>
             
-            <button id="nextPageButton" onclick="goToNextPage()">Ir para próxima página</button>  
-        </div>  
+            <button id="nextPageButton" onclick="goToNextPage()">Ir para próxima página</button>
+        </div>
 
-        <!-- Caixa de rolagem com o roteiro -->  
-        <div class="script-box">  
-            <h2>Roteiro</h2>  
-            <div class="scrollable-script">  
-                <pre id="script-content">  
-<character>Eco</character> - <character>Gabi</character>  
-<character>Bruto</character> - <character>Henrique Felipe</character>  
-<character>Francês</character> - <character>João Guilherme</character>  
-<character>Tempesta</character> - <character>Flora</character>  
-<character>Capitão Pátria</character> - <character>Guilherme Arthur</character>  
-<character>Luz-Estrela</character> - <character>Ana Luiza</character>  
-<character>Maeve</character> - <character>Ana Izaura</character>  
-<character>Ashley</character> - <character>Ana Júlia</character>  
+        <!-- Caixa de rolagem com o roteiro -->
+        <div class="script-box">
+            <h2>Roteiro</h2>
+            <div class="scrollable-script">
+                <pre id="script-content">
+                    Eco - Gabi
+Bruto - Henrique Felipe
+Francês - João Guilherme
+Tempesta - Flora
+Capitão Pátria - Guilherme Arthur
+Luz-Estrela - Ana Luiza
+Maeve - Ana Izaura
+Ashley - Ana Júlia
+THE BOYS - CENA 1
+(Ashley entra pelo corredor com repórteres falando em burburinho atrás).
+Ashley: (faz gestos para que os repórteres se acalmem) Um por vez! Um por vez!
+Repórter 1: Senhorita Ashley, o que vocês pretendem fazer em relação aos número
+de civis que foram mortos por supers que vem aumentando nas últimas semanas?
+Repórter 2: A respeito dos protestos sobre os atos de terrorismo cometido pela
+guarda da Vought, como vocês se posicionam?
+Repórter 3: A mídia quer saber, estamos seguros nas ruas sabendo que alguém
+capaz de enganar vocês está a solta, conseguiremos dormir tranquilos?
+Repórter 4:O que a Vought fará em relação ao roubo de composto V ocorrido
+recentemente? Vocês já o recuperaram?
+Ashley: Ah meu deus! Me deixem falar pelo menos!
+(ficam todos em silêncio)
+Fig-Plateia 1: Ashley, o que a Vought pretende fazer em relação a destruição
+causada pelos supers? Vocês farão projetos sociais para isso? Pessoas estão
+morrendo e vocês não demonstram preocupação!
+Ashley: A justiça social é muito importante por aqui!
+Fig-Plateia 1: Desde quando?
+Ashley: Querido, black lives matter é a minha hashtag preferida! O meu insta? Só
+telas pretas.
+Fig-Plateia 2: Não acha que existe uma possibilidade de vocês estarem cometendo
+uma espécie de violência heróica? A Vought não acha que esses tipos de atitudes
+por parte dos Heróis é prejudicial à população?
+Ashley: Às vezes medidas drásticas precisam ser tomadas, mas esse não é o caso.
+E vocês querem que nós façamos o quê? Lutemos contra os criminosos usando o
+poder da amizade? Por favor…
+Fig-Plateia 3: Vocês deveriam limitar o uso de composto V a pessoas responsáveis!
+Ashley: Está dizendo que nossos heróis são irresponsáveis? Acredito que vocês
+civis devem mais gratidão aos supers que guardam essa cidade! Vocês são
+estúpidos, se não fosse por eles vocês viveriam em meio ao crime e…
+(Toca a música tema do capitão, e Pátria entra nervoso, todos aplaudem ele).
+Pátria: Tudo bem! Ashley, acho que já deu por hoje. (empurra Ashley para fora do
+palanque e sobe no lugar dela)
+Repórter 3: Capitão Pátria, o que vocês estão fazendo sobre o roubo de composto
+V?
+Repórter 4: Corremos muito perigo se esse composto cair em mãos erradas?
+Pátria: Fiquem tranquilos, já estamos lidando com a situação. O composto V só é
+eficaz em bebês, pois eles podem ter o seu DNA alterado sem mutação e erros. Em
+adultos, a taxa de mortalidade é alta e o composto não deve ser usado. Portanto,
+não há perigo iminente. Também estamos trabalhando para recuperar o composto V
+roubado, então não há porque se preocupar.
+Fig-Plateia 4: Essas mudanças no DNA dos bebês ainda recém formados impactam
+negativamente no seu desenvolvimento?
+Pátria: Acho que ainda não deixei claro para você, querida. Ashley, olha para mim.
+(Ashley olha) Tem algo de errado comigo?
+Ashley: Não, capitão.
+Pátria: Isso responde a sua pergunta?. (Ele olha para o Fig-Plateia 4) Bem, chega de
+perguntas por hoje. Fiquem com Deus e até a próxima.
+(Eles saem. Vídeo de introdução)
+THE BOYS - CENA 2
+(Na torre da Vought, Pátria e Ashley voltam pra torre).
+Tempesta: Iai? Como foi o pronunciamento aos idiotas?
+Ashley: Ótimo! O Capitão Pátria foi excelente, colocou ordem e esclareceu tudo com
+tanta… (Pátria corta ela).
+Pátria: Ashley, some da minha frente.
+(Ashley sai da sala frustrada, Pátria suspira e para em frente a Tempesta)
+Pátria: Alguma notícia, Tempesta?
+Tempesta: Bem, descobrimos quem é a responsável pelo roubo da leva de
+composto V.
+(Imagem da Eco é projetada atrás deles)
+Tempesta: Maya Lopez, ou, Eco. Ela é ex-funcionária do rei do crime (passa uma
+imagem do rei do crime), mas recentemente o traiu. Ainda não sabemos pra quem ela
+trabalha, mas existem algumas suspeitas…
+Pátria: Certo…
+Tempesta: Descobrimos que ela levou não só roubou o composto V, mas também
+algumas documentações…
+Pátria: Quais documentos?
+Tempesta: Dois arquivos desapareceram, um sobre você e outro sobre mim…
+Pátria: Seja mais específica…
+Tempesta: Um monte de baboseira, crimes cometidos, pessoas que matamos,
+informações confidenciais… Resumindo, arquivos que podem fuder tanto a nossa
+reputação quanto a reputação da Vought.
+Pátria: Já enfrentamos casos piores…
+Tempesta: Tem uma foto sua tomando leite, direto de uma mamadeira.
+(Uma foto constrangedora do Pátria é projetada e Pátria fica visivelmente afetado)
+Pátria: Ah! Que piada de mal gosto, Tempesta.
+Tempesta: Fica tranquilo, a minha suspeita é que Eco esteja junto com a Luz-Estrela
+e os otários. A gente sabe bem a intenção deles, e esses arquivos seriam muito
+úteis para seja lá o que eles pretendem fazer…
+Pátria: A Luz-Estrela, ah sim… Tá! Tá! Tira logo essa foto daí! Tira! (Pátria faz um
+gesto abanando a mão e a foto sai do projetor) A minha paciência já se esgotou…
+(Pátria levanta e começa a sair)
+Tempesta: Nossa, você ficou bastante afetado com essa foto… eu nunca tinha visto
+você tremer. (ri um pouco)
+Pátria: (para de caminhar e se vira lentamente para Tempesta, falando calmamente) Olha,
+hum… escuta aqui Tempesta. Já não basta que literalmente a América inteira
+precise de mim… e agora até você! Até você me tratando com toda essa soberba.
+Não acha que é pressão o suficiente?
+Tempesta: (olha um pouco preocupada) Ok, me desculpa…
+Pátria: Não, não… Eu estou cercado de idiotas que não me respeitam. Todos vocês
+deveriam se inspirar em mim, eu fui escolhido por Deus para salvar essa
+humanidade. Eu sou melhor, mais forte, mais esperto… eu sou melhor! E vocês
+deveriam agradecer a Cristo por eu ser assim.(Pátria termina o discurso e começa a
+caminhar para fora de cena)
+Tempesta: Escolhido por Deus?
+Pátria: E não seria? Me diga, quem conseguiria me derrotar? Eu poderia
+simplesmente partir esse prédio ao meio usando apenas a minha capacidade de
+concentrar feixes de luz altamente colimados, que direcionam uma quantidade de
+energia absurda em raios que saem dos meus olhos límpidos! (fala apontando pros
+próprios olhos) Quem é mais forte do que eu? Meu corpo é mais resistente, a minha
+pele é impenetrável e meus músculos são maiores. A miostatina que reduz
+capacidade muscular no corpo comum de vocês os limita, quanto a mim? Eu nasci
+superior… eu não tenho que passar a vida tomando whey, creatina e todas essas
+porcarias pra zerar o leg press.
+Tempesta: Se você acredita que é um ser divino, quem sou eu pra contestar.
+Pátria: Não vai ser uma foto de merda que vai me derrotar.
+(Pátria, nervoso, começa a caminhar para sair da cena)
+Tempesta: Aonde você vai?
+Pátria: Mostrar a essa garota quem que manda nesta cidade.
+Tempesta: Você quer matar a Eco?
+Pátria: Você precisa dela viva? (Ela balança a cabeça que não. Pátria continua andando)
+Pois é.
+THE BOYS - CENA 3
+(Barulhos de tiro, Eco entra assustada. Ela anda com a guarda ativa, olhando para todos os
+lados a sua volta, até esbarrar no Pátria)
+Pátria: Olha só! Você achou que ia entrar na minha torre, roubar as minhas coisas e
+sair ilesa?
+(Ela fica em silêncio e aponta a arma para ele imediatamente)
+Pátria: Own, que fofa! Esses seus brinquedinhos não funcionam comigo… Vamos!
+Apenas me devolva tudo que você pegou e estamos resolvidos… O que acha?
+(Ela apenas continua encarando ele, enquanto Pátria continua encurralando ela)
+Pátria: Qual o seu problema? Tá surda? Você ao menos sabe falar? Responda!
+Tempesta: Você é muito mal educada, garota. Sua mãe não te ensinou a respeitar
+autoridades? Ou você só está nervosa demais? Own! A coitada não consegue nem
+falar…
+(Tempesta entra, indo por trás de Eco. Até que as luzes piscam e o holofote fica amarelo.
+Luz-Estrela entra)
+Luz: Vocês são bem inconvenientes… Já disseram isso pra vocês antes? Não
+sabem nem fazer uma abordagem decente.
+(Luz acena para Eco para chamar atenção dela e faz sinal em libras de confiança)
+Pátria: Luz-Estrela? Que merda é essa? Combinaram de fazer mímica?
+Tempesta: A idiota é doente. Faz sentido.
+Luz: Não é doente, é pessoa com necessidade específica.
+Pátria: Não vem com seu papinho militante pra cima de mim. Já passou da hora de
+você aprender a se comportar.
+Luz: Vai fazer o que? Me matar? Eu não tenho mais medo de você, eu percebi
+quem você é, eu vi como é pequeno. Vocês não vão tocar em mim, nem nela, ou
+New York inteira ficará sabendo. Você pode me matar, mas eu levo comigo a sua
+reputação.
+Pátria: (Pátria imita ela) Eu no seu lugar tomaria mais cuidado, a sua fama é a única
+coisa que te protege.
+Luz: Então vai, me mata, joga fora a imagem que você ralou tanto pra construir. Vai,
+experimenta!
+Tempesta: Eu gosto de você sabia, você tem atitude. Por que não grava um story?
+Não, não, já sei! Faz um tweet. “Capitão Pátria e Tempesta, os verdadeiros vilões”,
+quantas pessoas será que vão comprar essa sua ideia?
+Pátria: Meninas, me deem as coisas que vocês pegaram e… (fala entre a voz de
+Tempesta)
+Tempesta: (Tempesta corta a fala do Pátria) Vocês não vão nos vencer só com uma
+foto do Pátria mamando!
+Pátria: Não! Não… pera aí!
+Tempesta: Todo mundo já sabe que ele gosta de dar uma mamada.
+Pátria: Já chega!
+(Pátria começa a tremer e fala com os dentes cerrados, Luz adormece Eco sutilmente e saí
+de fininho arrastando Eco)
+Pátria: Tempesta! Eu chamei você aqui pra me ajudar a pegar a porra do composto
+e os documentos! Mas parece que você perdeu o respeito por mim…
+Tempesta: Eu só quis dizer que…
+Pátria: Você não tem que dizer nada.
+Tempesta: Não tem problema nenhum em mamar às vezes… (Holofote fica
+vermelho e toca o barulho de laser) Foi mal eu exagerei um pouquinho, eu só queria
+ajudar.
+Pátria: Sério? Como? Me fazendo de idiota na frente da Luz-Estrela?
+Tempesta: Nós vamos achá-las. (ela dá um tapinha nas costas do Pátria, ele se vira e
+percebe o sumiço)
+Pátria: Ah! Eu não acredito! Como você deixou elas escaparem?!
+(ideia de interação com o público: pátria perguntando para o público pra que ela lado elas
+foram, e ele indo para o lado contrário por que não confia no público)
+Pátria: Vocês! (Olha para o público) Pra onde eles foram?!
+(Público aponta o lado e Pátria pensa)
+Tempesta: E então?
+Pátria: Para o outro lado, eu não confio neles…
+THE BOYS - CENA 4
+(Luz está amarrando a Eco, Luz puxa o telefone e liga para Bruto)
+Luz: Bruto, cadê vocês? A garota tá comigo.
+Bruto: (no telefone) Calma Luz-Estrela, estamos chegando.
+(Luz desliga o telefone, toca o tema do Bruto, ele chega descoladamente)
+Bruto: Bem…
+Luz: Cadê o Francês?
+Francês: Perdón! (chega ofegante carregando equipamentos) Eu estava pegando umas
+coisas no carro… (ele olha para Eco encantado) É a garota?
+Luz: Sim, o Pátria estava prestes a matá-la. É questão de tempo até que eles
+venham atrás dela novamente.
+Bruto: Merda… (Brutos encara ela) Vamos logo com isso, onde você guardou o V? E
+os documentos? E quem mandou você atrás da Vought?
+Luz: Esqueci de mencionar, ela é surda.
+Bruto: Perfeito! Você nos trouxe uma surda. Ela é inútil pra gente!
+Francês: Pera aí, garoto… ela é preciosa para nós, não conseguimos roubar o
+composto tão facilmente, assim como ela fez…
+Bruto: E você espera que ela aprenda a falar? Ah não ser que você saiba ler
+mentes, essa idiota não tem valor nenhum.
+Luz: Ou, a não ser que você saiba libras…
+Bruto: Legal, agora vamos gastar todo o nosso pouco tempo com cursinho de libras!
+(Todos param por um momento e se olham entre si)
+Francês: Na verdade… eu já aprendi libras uma vez pra chegar numa garota que eu
+gostava… (Ele diz fazendo uma pose de charme com a mão na mesa)
+Bruto: Finalmente você vai ser útil pra alguma coisa…
+Francês: (vai para frente da Eco) Eu estou meio enferrujado. Mas posso tentar… (ele
+começa a fazer sinais para Eco)
+Francês: (libras) Olá! Tudo bem?
+Bruto: Ela tá amarrada, Francês! Como ela vai responder? Para de ser idiota.
+(Bruto desamarra Eco, ela levanta e rapidamente dá um chute em Francês e puxa uma
+pistola para a cara de Bruto)
+Francês: Argh! Putain!
+Bruto: (Levanta as mãos) Calma…
+Luz: Ei, estamos do mesmo lado… Você só precisa cooperar!
+(Maeve aparece de mansinho por trás e nocauteia Eco)
+Luz: Não, Maeve! Por que você fez isso?!
+Francês: Merda!
+Maeve: Ela ia matar vocês, relaxa, ela só desmaiou…
+Luz: A situação estava sob controle!
+Maeve: Eu percebi…
+Luz: Onde você estava esse tempo todo? Foi a maior barra pra tirar essa menina do
+Pátria sozinha.
+Maeve: Eu vi suas mensagens, mas eu estava ocupada demais resolvendo coisas
+mais importantes… (joga os documentos sobre a mesa) De nada.
+Luz: O que é isso?
+Maeve: Os relatórios da Vought que o Francês pediu.
+Francês: Uh, você conseguiu! (anda mancando até pegar os documentos, começa a
+folheá-los)
+Bruto: E o quê que tem de importante nessa papelada, Francês?
+Francês: Nessa “papelada” existem as pesquisas mais importantes das nossas
+vidas. Deixe-me ver, deixe-me ver… Ah sim! Bem, esses são relatórios sobre o
+desenvolvimento do composto V. Desde sua primeira versão até a mais recente
+produzida… (ele passa um tempinho lendo) Sim! O V contém agentes que alteram o
+DNA e RNA das células, estes modificando genes que codificam para proteínas
+associadas a características sobre-humanas…
+Maeve: Tá, traduz. Como que isso serve pra acabarmos com o Pátria?
+Francês: Simples! Basta algo que… que destrua os núcleos das células… algo que
+as corrompa… um…
+Bruto: Um?
+Francês: Um vírus! Ele poderia escravizar as células mutadas e qualquer super
+perderia seus poderes! (põe as mãos na cabeça agindo de forma eufórica) Mas… para
+criar o antígeno, eu precisaria de uma amostra do composto…
+Luz: Foi pra isso que trouxe ela aqui…
+(Todos olham para Eco desmaiada no chão, e depois para a sua bolsa)
+Francês: Vasculhem a mochila dela! Vamos, vamos!
+(Bruto, Maeve, e Luz começam a desarmar Eco e revirar a mochila dela, até descobrirem
+que não há mais nada dentro)
+Bruto: Cadê a merda do composto?!
+Luz: Era pra estar com ela!
+Bruto: Jura?! (Faz uma voz de pirraça)
+Maeve: O roubo aconteceu há uma semana, é lógico que ela não ia sair andando
+com o V por aí, né?!
+Francês: Só ela sabe onde está o composto…
+(Eco começa a acordar novamente)
+Luz-Estrela: Ela tá acordando!
+Maeve: (mira a arma da Eco para a própria) Agora sim! Vamos, renda-se!
+Francês: Ei! Vai com calma… (abaixa a arma da Maeve)
+Francês: (libras) Você pode confiar em mim.
+(Eco não responde)
+Francês: Me deixem a sós com ela. Saiam daqui! Talvez ela só não se sinta segura
+com esses olhares sanguinários…
+(Todos saem e deixam Eco e Francês a sós)
+Bruto: Só não vai fazer besteira… (sai com os outros personagens para fora da cena)
+THE BOYS - CENA 5
+CENA EM LIBRAS
+(Eco levanta e olha desconfiada para Francês)
+Francês: Hum…
+Francês: Oi, eu sou o Francês. Você consegue me entender?
+(Eco concorda com a cabeça)
+Francês: Humm… vamos lá…
+Francês: Qual seu nome?
+Eco: Eco.
+Francês: Eco? Que nome bonito… bem, acho que temos os mesmo objetivos…
+Você também quer derrotar o Pátria?
+(Eco balança a cabeça que não)
+Francês: Oh! (analisa um pouco) eu não entendo… então por que você roubou o
+composto?
+(Eco olha para um lado, para o outro, e responde)
+Eco: Eu sou surda… eu pensei que talvez o composto poderia me curar…
+Francês: Ah sim. (Francês parece comovido) Então… você queria roubar o composto
+para talvez poder curar a sua surdez…
+(Eco afirma com a cabeça)
+Francês: Isso é… comovente, mas nós também precisamos… Nós precisamos do
+composto para acabar com o Pátria.
+Eco: E o que eu tenho haver com isso?
+Francês: O que você tem haver com isso? Nós podemos salvar milhares de vidas! O
+Pátria já destruiu tanto, esses heróis prezam mais por sua fama do que pela paz.
+Eco: E quanto a mim? Vou continuar vivendo no silêncio? Vou continuar sendo...
+incompleta?
+(Francês parece estar pensando em uma resposta)
+Francês: Eu entendo seu medo. Ser surda não te faz menos do que qualquer um de
+nós… (dá uma leve pausa) Inclusive, ficamos impressionados em como você
+conseguiu pegar esse composto, nós precisamos de você!
+(Eco olha para Francês, visivelmente indecisa, mas finalmente cede)
+Eco: Eu posso ajudá-los, mas você tem que prometer que vai me ajudar depois…
+Francês: Ótimo! Eu prometo que você não vai se arrepender! Juro, eu vou proteger
+você e todos ficaremos bem.
+(Eco suspira e diz a localização do composto)
+Eco: Eu deixei o composto guardado no antigo covil do rei do crime, o prédio fica a
+alguns quilômetros daqui, é a instalação coberta na saída da cidade. Eu posso
+mostrar a localização. (puxa uma planta do prédio com marcações)
+Francês: Sim! Muito obrigado! Essa é a localização do composto? Eu sei onde fica!
+Perfeito… garotas e garoto! (Francês anda até a porta para chamar o pessoal, eles
+aparecem na cena) Eu disse que conseguiria! Sei onde está o composto. É a
+instalação coberta na estrada paralela a saída da cidade, vocês sabem onde é, é só
+pegar e sair, simples!
+Bruto: Incrível, já era hora. Luz-Estrela, você fica. Maeve! Você vem comigo e com a
+menina até o local do composto. Francês, fique aqui estudando os documentos,
+esse vírus tem que ficar pronto logo.
+Francês: Você, acompanha eles.
+Eco: Só vou se você for.
+Francês: Ela quer que eu vá…
+Bruto: Ah… já que é assim, então vamos nós todos... (pega uma arma em cima da
+mesa)
+(Eles saem de cena)
+THE BOYS - CENA 6
+(Todos adentram na instalação, o grupo vai andando lentamente, olhando para todos os
+cantos)
+Francês: Hurf… me desculpem o palavrão, mas carambolas! Que lanterna
+vagabunda! Tô vendo nada!
+Maeve: Luz-Estrela? (bate palmas) Seus poderes?
+Luz-Estrela: Deixa eu dar um jeitinho… (estala os dedos e as luzes ligam)
+Bruto: Ótimo. Agora vamos logo…
+Francês: Acho melhor a Eco nos guiar, ela conhece esse lugar melhor que todos
+nós.
+Francês: (libras) Onde está o composto?
+(Eco vai até o local onde estava o composto)
+Eco: (libras) Não está aqui. (Eco continua procurando)
+Maeve: Ah! Não vai me dizer que ela não achou… Certeza que você deixou aí?
+Bruto: Ok, legal, perdemos o V, a surdinha pode ir embora e a gente vai ter que
+pensar em outra forma de conseguir essa droga de composto…
+Maeve: Ah eu não acredito! Eu não sei voar, paguei 40 reais no moto taxi pra vir
+aqui e o composto ainda sumiu.
+Luz-estrela: 40 reais? Foi no Tina’s ou no Jr?
+Maeve: Tele-moto!
+(Eco acha ashley na salinha, puxando ela pelo cabelo e joga no chão)
+Ashley: Aí! Solta! Solta meu cabelo!
+Maeve: Pelo visto achou coisa melhor que o composto…
+Bruto: Olha só quem chegou para a festa… (mira a arma na testa da Ashley)
+Ashley: Opa, opa! Calma! Pera ae! Não me matem, por favor!
+Bruto: E por que não deveríamos?
+Maeve: Onde tá a merda do composto, Ashley?
+Ashley: Eu? Maeve… eu não peguei o composto…
+Bruto: Ah, uma pena que ela não está com composto, pessoal! Então vamos logo
+sacrificar a pobrezinha, não é mesmo? (fala agressivamente empunhando a arma para
+Ashley)
+Ashley: Não! Não! O composto não tá comigo, eu juro! Vocês vão duvidar da
+secretaria particular do maior herói da américa?
+Bruto: Pois eu acho que ele vai ter que contratar uma secretária nova…
+Ashley: Tá bom… eu entrego o composto a vocês… (Ela tira a ampola e os
+documentos do casaco e o Bruto pega)
+Bruto: Agora você falou minha língua. Vamos embora, temos muito o que fazer.
+(começam a andar para fora do palco)
+Ashley: Ei, esperem! Vocês vão me deixar aqui?
+Luz-Estrela: O Pátria já vem te buscar, fica tranquila.
+Ashley: (começa a levantar desengonçada) Eu não tô com o Pátria!
+(Eles param e olham pra ela)
+Luz-Estrela: Então o que você veio fazer aqui?
+Ashley: Eu só estava cansada…
+Maeve: Cansada? (ela ri)
+Luz-Estrela: Cansada de quê?
+Bruto: Cansada de lamber o chão que o Pátria pisa.
+Maeve: Ai tadinha, ela é toda boazinha, toda do bem, ela é tão galera… Ah vai se
+fuder, chata pra caralho.
+Ashley: Já chega! (grita) Eu cansei de ser tratada assim! Eu estou farta de ter que
+resolver a vida daqueles idiotas, até tô ficando careca! Olha!
+Eu acordo todos os dias com medo de que hoje ele resolva me jogar pela janela só
+porque o seu leite não tá quente o suficiente, e eu preciso fingir que tá tudo bem,
+enquanto eles decidem quantas pessoas eles vão matar hoje. Mas e quando… e
+quando for a minha vez? O que eu vou fazer quando do nada ele decidir me tirar do
+jogo e me fazer ir de arrasta pra cima. Eu odeio isso, eu não sou como eles, é tão
+fácil se tornar um monstro lá dentro, e eu luto tanto pra não ser como eles… Vocês
+precisam de mim, afinal, ninguém sabe como eu o que acontece lá dentro.
+Bruto: Poupa sua voz, e para de gritar por que aqui não tem nenhuma Irmã Dulce
+pra te fazer caridade alguma. Volta pro buraco de onde você saiu.
+Francês: Se bem que ela poderia ter alguma serventia…
+Bruto: Lá vem o todo misericordioso…
+Luz: Ashley poderia conseguir informações valiosas que nos deixariam um passo à
+frente do Pátria…
+Francês: Não só informações… Olha aqui, primeiro você vai nos arranjar um
+laboratório de primeira mão, com tudo que tivermos direito.
+Ashley: Pra que vocês precisam de um laboratório?
+Maeve: Segundo, você vai contar tudo que sabe sobre os planos do Pátria e da
+Vought. Cada detalhe, sem esconder nada.
+Bruto: Se quiser ficar do nosso lado vai ter que se provar digna, quero suas
+credenciais da Vought, senhas, códigos… tudo.
+Luz: Você também vai nos ajudar a descobrir cada fraqueza do Pátria, cada ponto
+fraco, cada vulnerabilidade, falha e defeito que ele possa ter.
+Bruto: (suspira) E você não é bem vinda, então é melhor não vacilar.
+Francês: Descola o laboratório pra gente o mais rápido possível, e também algumas
+amostras de Adenovírus…
+Ashley: Vírus?! Por que vocês querem um vírus? Vocês vão fazer um vírus pra
+matar o Pátria? Perfeito, essa peça vai virar uma verdadeira obra de ficção
+científica, vocês vão ver! (fala sorrindo para o público)
+Bruto: Shh, você já tá sabendo demais…
+(Os demais personagens saem de cena, com Bruto apontando a arma para a cabeça de
+Ashley)
+THE BOYS - CENA 7
+(Todos chegam ao laboratório que Ashley arrumou)
+Ashley: Serve pra vocês?
+Francês: Oui! Oui! (separa os equipamentos e coloca em cima da mesa)
+Bruto: E como que fazemos essa joça? Precisa disso tudo?
+Maeve: Só ele entende, Bruto. (fala com deboche)
+Francês: Então vamos lá, por onde começo…
+(Francês começar a mexer nas ampolas e preparar os equipamentos, Todo mundo começa
+a observar com a cara em cima dos equipamentos, como se estivesse fiscalizando tudo)
+Francês: (Francês suspira) Façam o favor de virar essas caras de bunda para lá?
+Bruto: A princesa tá tímida?
+Francês: Acontece que eu não estou acostumado com plateia em meu laboratório,
+acho melhor vocês saírem.
+(galera saindo e Eco fica parada)
+Francês: Ah… Perdón, mon chéri…
+Francês: (libras) Espere lá fora.
+Francês: Só quero a Luz-Estrela aqui.
+(Eco sai, ficam Francês e Luz)
+Luz-Estrela: Por que eu preciso estar aqui?
+Francês: Ah, mon cher, vou precisar do seus poderes. É o seguinte: você é uma
+super, e as suas habilidades envolvem uma reação química chamada
+bioluminescência. No seu corpo existem duas substâncias: a enzima luciferase e
+seu substrato a luciferina. Basicamente, a luciferina é um substrato orgânico, capaz
+de emitir luz quando entra em contato com oxigênio, e a luciferase é uma enzima,
+responsável por catalisar a oxidação. Durante essa reação, a energia armazenada
+na luciferina é liberada na forma de fótons de luz. Para que seu corpo realize essa
+conversão de energia, você utiliza ATP, e assim você consegue converter energia
+química em luminosa.
+Luz-Estrela: E como isso pode ajudar na criação do vírus?
+Francês: Bem, quando você realiza essa conversão de energia o seu metabolismo
+acelera, e diferente dos humanos comuns, o seu corpo emite uma energia térmica
+bem maior!
+Luz-Estrela: Então você quer que eu… esquente o vírus?
+Francês: Sim, preciso que você emita calor no nível certo, nessa substância. (ele
+mostra a substância) Esse calor vai aumentar a energia cinética das moléculas,
+acelerando suas reações químicas. Com isso, alguns componentes do vírus que
+requerem uma temperatura mais alta para atuar corretamente serão ativados.
+Luz-Estrela: Tudo bem, acho que eu consigo…
+Francês: Aqui! (entrega o becker a ela)
+(Luz aquece o frasco)
+Francês: Ok… Se afaste. Isso está prestes a ser letal. Chame os outros.
+(Luz chama o resto)
+Bruto: A princesa deixa a gente entrar agora?
+Francês: O vírus… (ele adiciona algo no frasco) está pronto! Agora sim! Vai ser isso
+que nós vamos usar para destruir todas as células do Pátria, rompendo todos os
+seus núcleos e escravizando-as. Com esta alta taxa de dispersão no sangue, em
+questão de segundos o Pátria cairá duro no chão!
+Bruto: E como isso vai funcionar?
+Francês: O vírus precisa de uma célula hospedeira para se reproduzir, dessa forma
+assim que ele escravizar as células do Pátria ele poderá inibir o composto através
+de uma enzima de restrição, que podem ser chamadas de endonucleases de
+restrição. Essas proteínas reconhecem o composto V na dupla fita de DNA do
+organismo e irão fragmentar a fita de DNA no ponto específico que o composto está
+presente no sangue, fazendo com que seus poderes desapareçam.
+Maeve: É seguro estarmos perto disso?
+Francês: Sim, só surtirá efeito se for injetado em suas veias.
+Maeve: Humm, então temos um problema.
+Francês: Que problema?
+Maeve: Não dá pra injetar isso nas veias do Pátria, sua pele é super resistente, o
+Pátria possui fibras de celulose em sua pele, que se misturam com as células,
+especificamente com os fibroblastos, que são responsáveis pela produção de
+colágeno e com os queratinócitos que são células da epiderme. Essas fibras de
+celulose atuam como uma estrutura dentro da matriz extracelular da pele. Fazendo
+com que sua pele seja resistente, como um tronco de árvore.
+Francês: Então temos que fazer ele ser infectado de outra forma…
+Eco: (libras) Algum problema com o plano?
+Francês: (libras) Estamos com um problema, como matamos o Pátria com o vírus
+que criamos.
+Eco: (libras) E se injetarmos?
+Francês: (libras) Não é tão simples, a pele do Pátria é impenetrável.
+Eco: (libras) Ele poderia inalar o vírus?
+Francês: Ótima ideia, mon coeur!
+Luz-Estrela: Que ideia?
+Bruto: Tô esperando uma tradução… cadê a legenda dessa peça?
+Eco: (libras) Podemos transformar o vírus em um gás e fazer o Pátria respirá-lo.
+Luz-Estrela: O que quer dizer com… (ela imita o símbolo toscamente) ..isso?
+(Eco faz cara de desgosto)
+Francês: Ela sugeriu em concentrarmos o vírus em um gás, e assim que o Pátria
+inalar… acabou. (fala animado)
+Bruto: Quanto tempo leva?
+Francês: Uns 5 minutos…
+Bruto: Faz isso logo, esse idiota tem que morrer hoje ainda.
+Francês: Nós temos outro problema…
+Bruto: Que problema?
+Francês: A gente só tem uma dose do vírus.
+Luz-Estrela: E a Tempesta?
+Francês: Exato, não sei se é suficiente pra matar os dois.
+Maeve: Ah, aquela piranha a gente mata na surra.
+Luz-Estrela: Acho que essa vai ser a nossa melhor opção… A Tempesta tem uma
+eletrocondutividade diferente de nós. Assim como uma nuvem carregada, ela
+acumula cargas elétricas em seu corpo, e isso permite que ela possa soltar
+descargas elétricas bem poderosas. Ela é capaz de ionizar o ar a sua volta e
+quando isso acontece, ela cria um caminho condutor que permite a movimentação
+de cargas elétricas. Dessa forma, ela faz com que as descargas que ela emite
+sejam concentradas em raios, podendo-os “lançar” onde quiser.
+Maeve: A Tempesta não é um empecilho de verdade, o nosso alvo é o Pátria. Na
+recalcada a gente mete uma surra e pronto, já falei.
+Bruto: Enquanto o Francês termina o gás, vamos nos organizar.
+Luz-Estrela: Só precisamos ter consciência de que o Pátria alguma hora vai sentir
+falta da Ashley…
+Bruto: Tem razão… Ashley você consegue encontrar eles antes?
+Ashley: Encontrar?
+Bruto: Sim, saber a localização deles, em tempo real.
+Ashley: Posso tentar.
+Francês: Está pronto! Está pronto! Precisamos de máscaras de gás para que a
+Maeve e a Luz não corram riscos.
+(Bruto pega duas máscaras embaixo da mesa)
+Bruto: Assim que nós encontrarmos eles, vocês duas cuidarão da Tempesta, e nós
+do Pátria.
+Francês: Eu vou estar com o vírus, (Ele põe o vírus na mochila e entrega a Eco) Maeve
+e Luz fiquem preparadas para colocarem as máscaras de gás. (elas concordam com a
+cabeça) Nós estamos em vantagem, mas isso não quer dizer que já ganhamos.
+Bruto: Independente de qualquer coisa, é hoje que o Pátria vai dançar.
+Ashley: Consegui! Descobri a localização deles.
+Bruto: Onde eles estão?
+Ashley: Eles estão…
+(Pátria e Tempesta aparecem)
+Pátria: Bem aqui.
+Maeve: Droga, eu já tinha pedido o moto-táxi…
+THE BOYS - CENA 8
+Pátria: Ashley! Então você esteve por aqui esse tempo todo… Interessante.
+Ashley: S-sim! Eu estive sim! Eu não vou continuar sendo sua cachorrinha, quer
+saber? Eu me demito. Boa sorte pra achar outra que te ature…
+Pátria: Eu mandei você falar?
+Ashley: Desculpe, Capitão. (perde a postura confiante)
+Pátria: O que vocês pretendem? Vão tentar me matar? Hahahaha!
+Tempesta: Vocês acreditam mesmo que conseguem? Parem de ser emocionados…
+Bruto: Por que vocês não pulam o showzinho, e partem a gente ao meio logo?
+Tempesta: Tentador, mas qual seria a graça? A gente tem que ir aos poucos, uma
+perna, um braço…
+Luz: Vocês podem ser fortes, mas nós…
+Maeve: Nós não somos pouca bosta não. (Tempesta leva um soco da Maeve)
+Tempesta: Como você é corajosa, garota!
+Maeve: Diferente de você.
+(Maeve mostra a língua. Começa a tocar Crazy in love)
+Tempesta: Cala a boca
+Maeve: Vem calar…
+Tempesta: Uh… vocês vão querer entrar nessa mesmo?
+Maeve: Agora é pra valer meninas, vamos lá!
+Pátria: Vocês acharam mesmo que eu não ia rebolar minha bunda hoje? 5, 6, 7, 8.
+(Coreografia de Crazy in love de As Branquelas)
+Bruto: Eu não acredito que as peruas acharam que tinha acabado!
+Francês: Agora vocês vão ver o que é dançar.
+(Coreografia de dança)
+(Pátria puxa os pés dos dois no meio da música e arrasta até o corredor. Tempesta vai
+atrás)
+Maeve: Aonde você pensa que vai bonitinha?
+Tempesta: Oi? As garotinhas querem lutar mais? Tudo bem, vamos lá.
+Luz: São quatro contra uma. Boa sorte!
+Tempesta: Quatro? (ela mata Ashley com um raio) Não é como se ela fosse tão útil né.
+(Elas começam a lutar no soco)
+(Enquanto a Tempesta toma uma surra, Bruto e Pátria no corredor)
+Bruto: Francês, o gás. Agora!
+Francês: Tá na mochila… com a Eco.
+Bruto: Tá de brincadeira…
+Francês: Segura o Pátria, eu vou dar um jeito.
+Bruto: Qual o problema, Pátria? Não tomou o seu leitinho hoje?
+Pátria: Haha! Vão ser essas as suas últimas palavras? Tem certeza?
+Bruto: Eu tenho pena de você. Se pelo menos houvesse um pouco mais de juízo
+nessa sua cabeça burra, talvez hoje você não seria esse pateta, fraco, chorão,
+carente de atenção. Mas é tarde demais pra concertar isso…
+Pátria: Fraco? Eu sou um super…
+Bruto: Um super fracasso.
+(Pátria fica furioso e a luz fica vermelha)
+Bruto: Quer um leitinho? (Tira a mamadeira do casaco)
+(Pátria faz barulho de raiva e eles correm pro palco)
+Francês: Vocês mataram ela?
+Maeve: Acontece…
+Francês: Mon Dieu… coloquem as máscaras, rápido.
+(Elas colocam as máscaras)
+Francês: (libras) O gás!
+(Eco entende e concorda com a cabeça, ela libera o gás)
+Bruto: Chegou a hora de você experimentar uma coisinha, Pátria.
+Pátria: O que?
+Bruto: Justiça.
+(começa a sair fumaça e o Pátria perde os poderes. O holofote sai do vermelho)
+Pátria: Meus poderes sumiram… Que merda que você fez?
+Bruto: Nivelei o jogo.
+(Maeve dá um tiro na cabeça do Pátria e tira a máscara. Todos ficam em silêncio)
+THE BOYS - CENA 9
+Luz: Nós… matamos ele? Acabou?
+Maeve: Acabou… Nós estamos livres.
+Bruto: É, foi bom conhecer vocês…
+Francês: Pra onde você vai?
+Bruto: Fizemos nosso trabalho, não achou que éramos amigos, achou?
+(Bruto sai andando)
+Francês: Temos uma dívida.
+Bruto: Uma dívida?
+Francês: Com ela. (ele aponta pra Eco)
+Bruto: Não, você tem uma dívida com ela. Eu já cumpri o meu papel, Francês. Eu
+tenho outros objetivos agora.
+Francês: Nós só conseguimos por causa dela. Você é mesmo tão… insensível…
+Bruto: Tchau, Francês.
+Maeve: Eu vou indo também, a gente se esbarra por aí…
+(Bruto e Maeve saem andando e Eco olha preocupada para Francês)
+Francês: (libras) Fique tranquila, eu vou te ajudar. Do jeitinho que prometi.
+Luz: Ajudar em quê?
+Francês: Eu prometi a ela que… a ajudaria a curar-se da surdez. Ela só roubou o
+composto porque achou que ele poderia a curar.
+Luz: (Luz-Estrela pensa um pouco) Bem… eu entendo que é uma realidade difícil…
+(caminhando pelo palco) porém… às vezes o que achamos ser nossas fraquezas, na
+verdade é aquilo que nos confere força, que nos torna únicos…
+Francês: (libras) O que você fez, o que você é, não depende de ter ou não um
+Composto V no sangue... você já é notável, com habilidades que vêm da sua
+experiência, da sua luta e do seu coração. Nós só conseguimos tudo isso por sua
+causa!
+Eco: (libras) Eu entendo, talvez eu só estava preocupada demais em estar no
+padrão…
+Francês: (balança a cabeça) Sim!
+Luz-estrela: Sabe, até aprendi algumas coisas com você… (em libras: “Estamos juntos
+com você”) e me desculpe por tudo isso… (Abraça Eco)
+(Francês assiste aquilo)
+Francês: Eu sei que isso não combina com a vibe dessa peça, mas eu posso me
+juntar?
+Luz-estrela: Sim…
+(Abraço cute cute e acaba a peça)
+THE BOYS - PÓS CRÉDITOS
+                </pre>
+            </div>
+        </div>
+    </div>
 
-<action>(Ashley entra pelo corredor com repórteres falando em burburinho atrás).</action>  
-<character>Ashley</character>: <action>(faz gestos para que os repórteres se acalmem)</action> Um por vez! Um por vez!  
-<character>Repórter 1</character>: Senhorita Ashley, o que vocês pretendem fazer em relação aos número de civis que foram mortos por supers que vem aumentando nas últimas semanas?  
-<character>Repórter 2</character>: A respeito dos protestos sobre os atos de terrorismo cometido pela guarda da Vought, como vocês se posicionam?  
+    <script>
+        const audioElement = document.getElementById('audio');
+        const playlists = document.querySelectorAll('.playlist');
+        const loopStatus = document.getElementById('loopStatus');
+        let currentTrackIndex = 0;
+        let loop = false;
+        let currentPlaylist = playlists[0];
 
-<character>Repórter 3</character>: A mídia quer saber, estamos seguros nas ruas sabendo que alguém capaz de enganar vocês está a solta, conseguiremos dormir tranquilos?  
-<character>Repórter 4</character>: O que a Vought fará em relação ao roubo de composto V ocorrido recentemente? Vocês já o recuperaram?  
-<character>Ashley</character>: Ah meu deus! Me deixem falar pelo menos!  
-<action>(ficam todos em silêncio)</action>  
-<character>Fig-Plateia 1</character>: Ashley, o que a Vought pretende fazer em relação a destruição causada pelos supers? Vocês farão projetos sociais para isso? Pessoas estão morrendo e vocês não demonstram preocupação!  
-<character>Ashley</character>: A justiça social é muito importante por aqui!  
-<character>Fig-Plateia 1</character>: Desde quando?  
-<character>Ashley</character>: Querido, black lives matter é a minha hashtag preferida! O meu insta? Só telas pretas.  
+        function loadTrack(play = false) {
+            const tracks = currentPlaylist.querySelectorAll('li');
+            const currentTrack = tracks[currentTrackIndex];
+            audioElement.src = currentTrack.getAttribute('data-src');
+            if (play) {
+                audioElement.play();
+            }
+        }
 
-<character>Fig-Plateia 2</character>: Não acha que existe uma possibilidade de vocês estarem cometendo uma espécie de violência heróica? A Vought não acha que esses tipos de atitudes por parte dos Heróis é prejudicial à população?  
-<character>Ashley</character>: Às vezes medidas drásticas precisam ser tomadas, mas esse não é o caso. E vocês querem que nós façamos o quê? Lutemos contra os criminosos usando o poder da amizade? Por favor...  
-<character>Fig-Plateia 3</character>: Vocês deveriam limitar o uso de composto V a pessoas responsáveis!  
+        function playPause() {
+            if (audioElement.paused) {
+                audioElement.play();
+            } else {
+                audioElement.pause();
+            }
+        }
 
-<character>Ashley</character>: Está dizendo que nossos heróis são irresponsáveis? Acredito que vocês civis devem mais gratidão aos supers que guardam essa cidade! Vocês são estúpidos, se não fosse por eles vocês viveriam em meio ao crime e...  
-<action>(Toca a música tema do capitão, e Pátria entra nervoso, todos aplaudem ele).</action>  
-<character>Pátria</character>: Tudo bem! Ashley, acho que já deu por hoje. <action>(empurra Ashley para fora do palanque e sobe no lugar dela)</action>  
-<character>Repórter 3</character>: Capitão Pátria, o que vocês estão fazendo sobre o roubo de composto V?  
-<character>Repórter 4</character>: Corremos muito perigo se esse composto cair em mãos erradas?  
-<character>Pátria</character>: Fiquem tranquilos, já estamos lidando com a situação. O composto V só é eficaz em bebês, pois eles podem ter o seu DNA alterado sem mutação e erros. Em adultos, a taxa de mortalidade é alta e o composto não deve ser usado. Portanto, não há perigo iminente. Também estamos trabalhando para recuperar o composto V roubado, então não há porque se preocupar.  
+        function nextTrack() {
+            const tracks = currentPlaylist.querySelectorAll('li');
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            loadTrack(true);
+        }
 
-<character>Fig-Plateia 4</character>: Essas mudanças no DNA dos bebês ainda recém formados impactam negativamente no seu desenvolvimento?  
-<character>Pátria</character>: Acho que ainda não deixei claro para você, querida. <character>Ashley</character>, olha para mim.  
-<action>(Ashley olha)</action> Tem algo de errado comigo?  
-<character>Ashley</character>: Não, capitão.  
-<character>Pátria</character>: Isso responde a sua pergunta?. <action>(Ele olha para o Fig-Plateia 4)</action> Bem, chega de perguntas por hoje. <action>(Eles saem. Vídeo de introdução)</action>  
+        function previousTrack() {
+            const tracks = currentPlaylist.querySelectorAll('li');
+            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            loadTrack(true);
+        }
 
-<action>THE BOYS - CENA 2</action>  
-<action>(Na torre da Vought, Pátria e Ashley voltam pra torre).</action>  
-<character>Tempesta</character>: Iai? Como foi o pronunciamento aos idiotas?  
-<character>Ashley</character>: Ótimo! O Capitão Pátria foi excelente, colocou ordem e esclareceu tudo com tanta... <action>(Pátria corta ela).</action>  
-<character>Pátria</character>: Ashley, some da minha frente.  
-<action>(Ashley sai da sala frustrada, Pátria suspira e para em frente a Tempesta)</action>  
-<character>Pátria</character>: Alguma notícia, Tempesta?  
+        function toggleLoop() {
+            loop = !loop;
+            audioElement.loop = loop;
+            loopStatus.textContent = loop ? 'On' : 'Off';
+        }
 
-<character>Tempesta</character>: Bem, descobrimos quem é a responsável pelo roubo da leva de composto V.  
-<action>(Imagem da Eco é projetada atrás deles)</action>  
+        playlists.forEach(playlist => {
+            playlist.addEventListener('click', (e) => {
+                if (e.target.tagName === 'LI') {
+                    const tracks = playlist.querySelectorAll('li');
+                    currentPlaylist = playlist;
+                    currentTrackIndex = Array.from(tracks).indexOf(e.target);
+                    loadTrack(false);  // Não tocar automaticamente, apenas carregar a faixa
+                }
+            });
+        });
 
-<character>Tempesta</character>: Maya Lopez, ou, Eco. Ela é ex-funcionária do rei do crime <action>(passa uma imagem do rei do crime)</action>, mas recentemente o traiu. Ainda não sabemos pra quem ela trabalha, mas existem algumas suspeitas...  
-<character>Pátria</character>: Certo...  
-<character>Tempesta</character>: Descobrimos que ela levou não só roubou o composto V, mas também algumas documentações...  
-<character>Pátria</character>: Quais documentos?  
-<character>Tempesta</character>: Dois arquivos desapareceram, um sobre você e outro sobre mim...  
-<character>Pátria</character>: Seja mais específica...  
+        // Função para ir para a próxima página
+        function goToNextPage() {
+            window.location.href = 'Index2.html';
+        }
 
-<character>Tempesta</character>: Um monte de baboseira, crimes cometidos, pessoas que matamos, informações confidenciais... Resumindo, arquivos que podem fuder tanto a nossa reputação quanto a reputação da Vought.  
-<character>Pátria</character>: Já enfrentamos casos piores...  
-<character>Tempesta</character>: Tem uma foto sua tomando leite, direto de uma mamadeira.  
-<action>(Uma foto constrangedora do Pátria é projetada e Pátria fica visivelmente afetado)</action>  
-<character>Pátria</character>: Ah! Que piada de mal gosto, Tempesta.  
-<character>Tempesta</character>: Fica tranquilo, a minha suspeita é que Eco esteja junto com a Luz-Estrela e os otários. A gente sabe bem a intenção deles, e esses arquivos seriam muito úteis para seja lá o que eles pretendem fazer...  
-
-<character>Pátria</character>: A Luz-Estrela, ah sim... Tá! Tá! Tira logo essa foto daí! Tira! <action>(Pátria faz um gesto abanando a mão e a foto sai do projetor)</action> A minha paciência já se esgotou...  
-<character>Pátria</character>: (para de caminhar e se vira lentamente para Tempesta, falando calmamente) Ol
+        loadTrack(false);  // Não iniciar automaticamente o áudio
+    </script>
+</body>
+</html>
