@@ -13,7 +13,8 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #333;
+            color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -34,23 +35,23 @@
         .controls {
             width: 30%;
             background-color: #fff;
-            padding: 15px;
+            color: #000;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            height: fit-content;
         }
 
         .script-box {
             width: 65%;
             background-color: #fff;
-            padding: 15px;
+            color: #000;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            height: fit-content;
         }
 
         .scrollable-script {
-            max-height: 400px;
+            height: 400px;
             overflow-y: auto;
             background-color: #f9f9f9;
             padding: 10px;
@@ -64,11 +65,23 @@
             color: #000;
         }
 
+        .character {
+            color: #1e90ff; /* Azul para os nomes dos personagens */
+            font-weight: bold;
+        }
+
+        .action {
+            color: #ff6347; /* Tomate para ações dos personagens */
+        }
+
+        .dialogue {
+            color: #4682b4; /* SteelBlue para diálogos */
+        }
+
         .playlist-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 20px;
         }
 
         .playlist {
@@ -77,16 +90,18 @@
             margin: 0;
             background-color: rgba(53, 82, 245, 0.6);
             border-radius: 10px;
-            padding: 10px;
+            padding: 15px;
+            width: 100%;
         }
 
         .playlist li {
             cursor: pointer;
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #21c1cc;
             margin-bottom: 5px;
             border-radius: 5px;
             background-color: #0a0b5f;
+            color: #fff;
         }
 
         .playlist li:hover {
@@ -98,13 +113,16 @@
         }
 
         .player-controls {
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
         button {
-            margin: 0 5px;
-            padding: 8px 16px;
-            font-size: 14px;
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         #nextPageButton {
@@ -112,10 +130,6 @@
             padding: 10px 20px;
             background-color: #21c1cc;
             color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
         }
 
         #nextPageButton:hover {
@@ -137,7 +151,7 @@
                 </ul>
                 <ul class="playlist" id="playlist2">
                     <li data-src="Smoke.mp3">Fumaça</li>
-                    <li data-src="Stop.mp3">Para a Musica</li>
+                    <li data-src="Stop.mp3">Para a Música</li>
                     <li data-src="Laser.mp3">Laser</li>
                     <li data-src="gun.mp3">Gun</li>
                 </ul>
@@ -153,7 +167,7 @@
                 <button onclick="toggleLoop()">Loop: <span id="loopStatus">Off</span></button>
             </div>
             
-            <button id="nextPageButton" onclick="goToNextPage()">Voltar para página anterior</button>
+            <button id="nextPageButton" onclick="goToPreviousPage()">Voltar para página anterior</button>
         </div>
 
         <!-- Caixa de rolagem com o roteiro -->
@@ -162,55 +176,33 @@
             <div class="scrollable-script">
                 <pre id="script-content">
                     
-THE BOYS - CENA 1
-(Ashley entra pelo corredor com repórteres falando em burburinho atrás).
-<span class="character">Ashley</span>: (faz gestos para que os repórteres se acalmem) Um por vez! Um por vez!
-<span class="reporter">Repórter 1</span>: Senhorita Ashley, o que vocês pretendem fazer em relação aos número
-de civis que foram mortos por supers que vem aumentando nas últimas semanas?
-<span class="reporter">Repórter 2</span>: A respeito dos protestos sobre os atos de terrorismo cometido pela
-guarda da Vought, como vocês se posicionam?
-<span class="reporter">Repórter 3</span>: A mídia quer saber, estamos seguros nas ruas sabendo que alguém
-capaz de enganar vocês está a solta, conseguiremos dormir tranquilos?
-<span class="reporter">Repórter 4</span>:O que a Vought fará em relação ao roubo de composto V ocorrido
-recentemente? Vocês já o recuperaram?
-<span class="character">Ashley</span>: Ah meu deus! Me deixem falar pelo menos!
-(ficam todos em silêncio)
-<span class="fig-plateia">Fig-Plateia 1</span>: Ashley, o que a Vought pretende fazer em relação a destruição
-causada pelos supers? Vocês farão projetos sociais para isso? Pessoas estão
-morrendo e vocês não demonstram preocupação!
-<span class="character">Ashley</span>: A justiça social é muito importante por aqui!
-<span class="fig-plateia">Fig-Plateia 1</span>: Desde quando?
-<span class="character">Ashley</span>: Querido, black lives matter é a minha hashtag preferida! O meu insta? Só
-telas pretas.
-<span class="fig-plateia">Fig-Plateia 2</span>: Não acha que existe uma possibilidade de vocês estarem cometendo
-uma espécie de violência heróica? A Vought não acha que esses tipos de atitudes
-por parte dos Heróis é prejudicial à população?
-<span class="character">Ashley</span>: Às vezes medidas drásticas precisam ser tomadas, mas esse não é o caso.
-E vocês querem que nós façamos o quê? Lutemos contra os criminosos usando o
-poder da amizade? Por favor…
-<span class="fig-plateia">Fig-Plateia 3</span>: Vocês deveriam limitar o uso de composto V a pessoas responsáveis!
-<span class="character">Ashley</span>: Está dizendo que nossos heróis são irresponsáveis? Acredito que vocês
-civis devem mais gratidão aos supers que guardam essa cidade! Vocês são
-estúpidos, se não fosse por eles vocês viveriam em meio ao crime e…
-(Toca a música tema do capitão, e <span class="character">Pátria</span> entra nervoso, todos aplaudem ele).
-<span class="character">Pátria</span>: Tudo bem! Ashley, acho que já deu por hoje. (empurra Ashley para fora do
-palanque e sobe no lugar dela)
-<span class="reporter">Repórter 3</span>: Capitão Pátria, o que vocês estão fazendo sobre o roubo de composto
-V?
-<span class="reporter">Repórter 4</span>: Corremos muito perigo se esse composto cair em mãos erradas?
-<span class="character">Pátria</span>: Fiquem tranquilos, já estamos lidando com a situação. O composto V só é
-eficaz em bebês, pois eles podem ter o seu DNA alterado sem mutação e erros. Em
-adultos, a taxa de mortalidade é alta e o composto não deve ser usado. Portanto,
-não há perigo iminente. Também estamos trabalhando para recuperar o composto V
-roubado, então não há porque se preocupar.
-<span class="fig-plateia">Fig-Plateia 4</span>: Essas mudanças no DNA dos bebês ainda recém formados impactam
-negativamente no seu desenvolvimento?
-<span class="character">Pátria</span>: Acho que ainda não deixei claro para você, querida. Ashley, olha para mim.
-(Ashley olha) Tem algo de errado comigo?
-<span class="character">Ashley</span>: Não, capitão.
-<span class="character">Pátria</span>: Isso responde a sua pergunta?. (Ele olha para o <span class="fig-plateia">Fig-Plateia 4</span>) Bem, chega de
-perguntas por hoje. Fiquem com Deus e até a próxima.
-(Eles saem. Vídeo de introdução)
+<span class="character">THE BOYS - CENA 1</span>
+(<span class="action">Ashley entra pelo corredor com repórteres falando em burburinho atrás</span>).
+<span class="character">Ashley</span>: <span class="action">(faz gestos para que os repórteres se acalmem)</span> Um por vez! Um por vez!
+<span class="character">Repórter 1</span>: <span class="dialogue">Senhorita Ashley, o que vocês pretendem fazer em relação aos números de civis que foram mortos por supers que vêm aumentando nas últimas semanas?</span>
+<span class="character">Repórter 2</span>: <span class="dialogue">A respeito dos protestos sobre os atos de terrorismo cometidos pela guarda da Vought, como vocês se posicionam?</span>
+<span class="character">Repórter 3</span>: <span class="dialogue">A mídia quer saber, estamos seguros nas ruas sabendo que alguém capaz de enganar vocês está à solta? Conseguiremos dormir tranquilos?</span>
+<span class="character">Repórter 4</span>: <span class="dialogue">O que a Vought fará em relação ao roubo de composto V ocorrido recentemente? Vocês já o recuperaram?</span>
+<span class="character">Ashley</span>: <span class="action">Ah meu Deus! Me deixem falar pelo menos!</span>
+(<span class="action">ficam todos em silêncio</span>)
+<span class="character">Fig-Plateia 1</span>: <span class="dialogue">Ashley, o que a Vought pretende fazer em relação à destruição causada pelos supers? Vocês farão projetos sociais para isso? Pessoas estão morrendo e vocês não demonstram preocupação!</span>
+<span class="character">Ashley</span>: <span class="dialogue">A justiça social é muito importante por aqui!</span>
+<span class="character">Fig-Plateia 1</span>: <span class="dialogue">Desde quando?</span>
+<span class="character">Ashley</span>: <span class="dialogue">Querido, Black Lives Matter é a minha hashtag preferida! O meu Insta? Só telas pretas.</span>
+<span class="character">Fig-Plateia 2</span>: <span class="dialogue">Não acha que existe uma possibilidade de vocês estarem cometendo uma espécie de violência heroica? A Vought não acha que esses tipos de atitudes por parte dos heróis são prejudiciais à população?</span>
+<span class="character">Ashley</span>: <span class="dialogue">Às vezes medidas drásticas precisam ser tomadas, mas esse não é o caso. E vocês querem que nós façamos o quê? Lutemos contra os criminosos usando o poder da amizade? Por favor…</span>
+<span class="character">Fig-Plateia 3</span>: <span class="dialogue">Vocês deveriam limitar o uso de composto V a pessoas responsáveis!</span>
+<span class="character">Ashley</span>: <span class="dialogue">Está dizendo que nossos heróis são irresponsáveis? Acredito que vocês civis devem mais gratidão aos supers que guardam essa cidade! Vocês são estúpidos, se não fosse por eles, vocês viveriam em meio ao crime e…</span>
+(<span class="action">Toca a música tema do Capitão Pátria, e Pátria entra nervoso, todos aplaudem</span>).
+<span class="character">Pátria</span>: <span class="dialogue">Tudo bem! Ashley, acho que já deu por hoje.</span> <span class="action">(empurra Ashley para fora do palanque e sobe no lugar dela)</span>
+<span class="character">Repórter 3</span>: <span class="dialogue">Capitão Pátria, o que vocês estão fazendo sobre o roubo de composto V?</span>
+<span class="character">Repórter 4</span>: <span class="dialogue">Corremos muito perigo se esse composto cair em mãos erradas?</span>
+<span class="character">Pátria</span>: <span class="dialogue">Fiquem tranquilos, já estamos lidando com a situação. O composto V só é eficaz em bebês, pois eles podem ter o seu DNA alterado sem mutação e erros. Em adultos, a taxa de mortalidade é alta e o composto não deve ser usado. Portanto, não há perigo iminente. Também estamos trabalhando para recuperar o composto V roubado, então não há por que se preocupar.</span>
+<span class="character">Fig-Plateia 4</span>: <span class="dialogue">Essas mudanças no DNA dos bebês ainda recém-formados impactam negativamente no seu desenvolvimento?</span>
+<span class="character">Pátria</span>: <span class="dialogue">Acho que ainda não deixei claro para você, querida. Ashley, olha para mim.</span> <span class="action">(Ashley olha)</span> <span class="dialogue">Tem algo de errado comigo?</span>
+<span class="character">Ashley</span>: <span class="dialogue">Não, Capitão.</span>
+<span class="character">Pátria</span>: <span class="dialogue">Isso responde à sua pergunta?</span> <span class="action">(Ele olha para o Fig-Plateia 4)</span> <span class="dialogue">Bem, chega de perguntas por hoje. Fiquem com Deus e até a próxima.</span>
+(<span class="action">Eles saem. Vídeo de introdução</span>)
 
                 </pre>
             </div>
@@ -271,9 +263,9 @@ perguntas por hoje. Fiquem com Deus e até a próxima.
             });
         });
 
-        // Função para ir para a próxima página
-        function goToNextPage() {
-            window.location.href = 'Index2.html';
+        // Função para voltar à página anterior
+        function goToPreviousPage() {
+            window.history.back();
         }
 
         loadTrack(false);  // Não iniciar automaticamente o áudio
